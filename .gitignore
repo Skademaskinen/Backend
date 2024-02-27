@@ -1,1 +1,4 @@
 .debugdata.json
+venv
+
+__pycache__
