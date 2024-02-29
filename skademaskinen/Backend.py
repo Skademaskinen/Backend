@@ -6,6 +6,7 @@ sys.path.append(f'{os.path.dirname(__file__)}/..')
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from json import loads, dumps
 import html
+from time import time
 
 from lib.tables.Users import Users
 from lib.tables.Guestbook import Guestbook
@@ -108,14 +109,6 @@ class RequestHandler(BaseHTTPRequestHandler):
                 else:
                     self.deny()
                 return
-            case "visit":
-                today, yesterday, total = visits.get(self.data["time"])
-                self.ok(dumps({
-                    "today":today,
-                    "yesterday":yesterday,
-                    "total":total
-                }))
-                return
         if tokens.verify(self.data["token"]):
             match self.cmd:
                 case "verify":
@@ -169,8 +162,11 @@ class RequestHandler(BaseHTTPRequestHandler):
                     self.ok(dumps(guestbook.ids()))
                 return
             case "session":
-                token = visits.new()
-                visits.register(token, self.data["time"])
+                if "token" in self.data.keys():
+                    token = self.data["token"]
+                else:
+                    token = visits.new()
+                visits.register(token)
                 self.ok(token)
                 return
             case "threads":
@@ -187,6 +183,14 @@ class RequestHandler(BaseHTTPRequestHandler):
                 return
             case "images":
                 self.ok(dumps(os.listdir("images")))
+                return
+            case "visit":
+                today, yesterday, total = visits.get(time())
+                self.ok(dumps({
+                    "today":today,
+                    "yesterday":yesterday,
+                    "total":total
+                }))
                 return
         if tokens.verify(self.data["token"]):
             match self.cmd:
