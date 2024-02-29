@@ -169,6 +169,14 @@ class RequestHandler(BaseHTTPRequestHandler):
                 else:
                     self.ok(dumps(guestbook.ids()))
                 return
+            case "session":
+                if "token" in self.data.keys():
+                    token = self.data["token"]
+                else:
+                    token = visits.new()
+                visits.register(token)
+                self.ok(token)
+                return
             case "threads":
                 self.ok(dumps(threads.ids()))
                 return
