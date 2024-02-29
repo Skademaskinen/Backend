@@ -185,7 +185,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self.ok(dumps(os.listdir("images")))
                 return
             case "visit":
-                today, yesterday, total = visits.get(time())
+                today, yesterday, total = visits.get()
                 self.ok(dumps({
                     "today":today,
                     "yesterday":yesterday,
