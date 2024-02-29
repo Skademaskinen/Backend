@@ -5,8 +5,10 @@ from typing import Any
 from subprocess import check_output
 from json import dumps
 import nmap
+from time import time
 
-def isToday(now:int, before:int) -> bool:
+def isToday(before:int) -> bool:
+    now = time()
     datetimeNow = datetime.datetime.fromtimestamp(now)
     datetimeBefore = datetime.datetime.fromtimestamp(before)
     yeardiff = datetimeNow.year - datetimeBefore.year
@@ -15,7 +17,8 @@ def isToday(now:int, before:int) -> bool:
     return yeardiff == 0 and monthdiff == 0 and daydiff == 0
 
 
-def isYesterday(now:int, before:int) -> bool:
+def isYesterday(before:int) -> bool:
+    now = time()
     datetimeNow = datetime.datetime.fromtimestamp(now)
     datetimeBefore = datetime.datetime.fromtimestamp(before)
     yeardiff = datetimeNow.year - datetimeBefore.year
