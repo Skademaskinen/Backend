@@ -109,6 +109,14 @@ class RequestHandler(BaseHTTPRequestHandler):
                 else:
                     self.deny()
                 return
+            case "session":
+                if "token" in self.data.keys():
+                    token = self.data["token"]
+                else:
+                    token = visits.new()
+                visits.register(token)
+                self.ok(token)
+                return
         if tokens.verify(self.data["token"]):
             match self.cmd:
                 case "verify":
