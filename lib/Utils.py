@@ -2,7 +2,7 @@ import datetime
 from sys import argv
 import os
 from typing import Any
-from subprocess import check_output
+from subprocess import check_output, DEVNULL
 from json import dumps
 import nmap
 from time import time
@@ -62,10 +62,10 @@ def verify(token:str, server:str, interface:str) -> bool:
         "-d", dumps({
             "token":token
         }),
-        server+"/admin/verify",
+        server+"/admin/tokens/verify",
         "--interface", interface,
         "-w", "%{http_code}"
-    ]).decode().strip()
+    ], stderr=DEVNULL).decode().strip()
     return code == "200"
 
 ip = getArg(["--inet"], "10.225.171.0/24", str)
