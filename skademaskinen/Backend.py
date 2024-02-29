@@ -142,6 +142,9 @@ class RequestHandler(BaseHTTPRequestHandler):
                     if self.data["html"]:
                         posts.setContent(self.data["id"], self.data["html"])
                     self.ok()
+                case "setpriority":
+                    posts.setPriority(self.data["id"], self.data["value"])
+                    self.ok()
         else:
             self.deny()
     
