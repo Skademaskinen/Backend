@@ -42,10 +42,8 @@ class Users(Table):
             return data
         return [{"username":username, "authorized":authorized==1} for username,authorized, in data]
         
-    def authorize(self, username:str):
-        self.database.doSQL(f"update {type(self).__name__} set authorized = true where username = ?", [username])
+    def toggle(self, username:str):
+        self.database.doSQL(f"update {type(self).__name__} set authorized = (1 - authorized) where username = ?", [username])
     
-    def deauthorize(self, username:str):
-        self.database.doSQL(f"update {type(self).__name__} set authorized = false where username = ?", [username])
 
     
