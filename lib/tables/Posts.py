@@ -13,7 +13,7 @@ class Posts(Table):
     def ids(self, id:int):
         data = self.database.doSQL(f"select id,priority from {type(self).__name__} where threadId = ?", [id])
         if data:
-            return [{"id":_id, "priority":priority} for _id,priority, in data]
+            return [{"id":_id, "value":priority} for _id,priority, in data]
         else:
             return []
         
