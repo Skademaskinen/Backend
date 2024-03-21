@@ -52,12 +52,16 @@ class Backend(BaseHTTPRequestHandler):
         if self.exiting: return
         self.exiting = True
         self.send_response(200)
-        self.end_headers()
         if data:
             if encode:
-                self.wfile.write(data.encode())
+                self.send_header("Content-Type", "application/json")
+                final = data.encode()
             else:
-                self.wfile.write(data)
+                final = data
+            self.end_headers()
+            self.wfile.write(final)
+        else:
+            self.end_headers()
         
     def deny(self, data=""):
         if self.exiting: return
