@@ -30,6 +30,40 @@ class RequestHandler(Backend):
     def exec(self):
         self.parseData()
         match self.cmd:
+            case "":
+                print(self.client_address)
+                self.ok(dumps({
+                    "unprivileged": [
+                        "users/verify",
+                        "users/register",
+                        "guestbook/new",
+                        "guestbook/ids",
+                        "guestbook/get",
+                        "visits/new",
+                        "visits/get",
+                        "threads/ids",
+                        "threads/get",
+                        "posts/ids",
+                        "posts/get",
+                        "images",
+                    ],
+                    "privileged": [
+
+                        "status",
+                        "users/get",
+                        "users/authorize",
+                        "users/delete",
+                        "tokens/verify",
+                        "threads/new",
+                        "threads/edit",
+                        "threads/delete",
+                        "posts/new",
+                        "posts/order",
+                        "posts/delete",
+                        "posts/images/all",
+                        "posts/images/delete"
+                    ]
+                }))
             case "users/verify":
                 if users.verify(self.data["username"], self.data["password"]):
                     self.ok(tokens.get(self.data["username"]))
